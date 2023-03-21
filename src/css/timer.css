@@ -1,0 +1,49 @@
+/* Стилі для поля вибору дати */
+#datetime-picker {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Стилі для кнопки "Start" */
+button[data-start] {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #569ff7;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button[disabled] {
+  background-color: #ddd;
+  color: #777;
+  cursor: not-allowed;
+}
+
+/* Стилі для таймера */
+.timer {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 36px;
+}
+
+.field {
+  margin: 0 10px;
+  text-align: center;
+}
+
+.value {
+  font-weight: bold;
+  color: #569ff7;
+}
+
+.label {
+  margin-top: 5px;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #999;
+}
