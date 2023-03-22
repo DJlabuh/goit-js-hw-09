@@ -15,7 +15,7 @@ const elements = {
 startButton.disabled = true;
 
 function calculateTimeLeft(endDate) {
-  const currentDate = new Date();
+  const currentDate = Date.now();
   const diffInMs = endDate - currentDate;
   const timeLeft = convertMs(diffInMs);
   return timeLeft;
@@ -39,21 +39,26 @@ function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
 
+function updateCountdownDisplay(timeLeft) {
+  const { days, hours, minutes, seconds } = convertMs(timeLeft);
+
+  elements.days.textContent = addLeadingZero(days);
+  elements.hours.textContent = addLeadingZero(hours);
+  elements.minutes.textContent = addLeadingZero(minutes);
+  elements.seconds.textContent = addLeadingZero(seconds);
+}
+
+
 function countdown(selectedDate) {
   const countdownInterval = setInterval(() => {
-    const timeLeft = selectedDate - new Date();
+    const timeLeft = selectedDate - Date.now();
 
     if (timeLeft < 0) {
       clearInterval(countdownInterval);
       return;
     }
 
-    const { days, hours, minutes, seconds } = convertMs(timeLeft);
-
-    elements.days.textContent = addLeadingZero(days);
-    elements.hours.textContent = addLeadingZero(hours);
-    elements.minutes.textContent = addLeadingZero(minutes);
-    elements.seconds.textContent = addLeadingZero(seconds);
+    updateCountdownDisplay(timeLeft);
   }, 1000);
 }
 
@@ -62,19 +67,20 @@ flatpickr(datetimePicker, {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
+  onClose([selectedDates]) {
+    const selectedDate = selectedDates;
 
-    if (selectedDate <= new Date()) {
+    if (selectedDate <= Date.now()) {
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       startButton.disabled = false;
-
-      startButton.addEventListener('click', () => {
-        const timeLeft = calculateTimeLeft(selectedDate);
-        countdown(selectedDate);
-        startButton.disabled = true;
-      });
     }
   },
+});
+
+startButton.addEventListener('click', () => {
+  const selectedDate = flatpickr.parseDate(datetimePicker.value, 'Y-m-d H:i');
+  const timeLeft = calculateTimeLeft(selectedDate);
+  countdown(selectedDate);
+  startButton.disabled = true;
 });
