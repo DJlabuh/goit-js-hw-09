@@ -7,8 +7,7 @@ startBtn.addEventListener('click', onStartBtnClick);
 stopBtn.addEventListener('click', onStopBtnClick);
 
 function onStartBtnClick() {
-  startBtn.disabled = true;
-  stopBtn.disabled = false;
+  toggleButtons(true, false);
 
   intervalId = setInterval(() => {
     const color = getRandomHexColor();
@@ -17,10 +16,14 @@ function onStartBtnClick() {
 }
 
 function onStopBtnClick() {
-  startBtn.disabled = false;
-  stopBtn.disabled = true;
+  toggleButtons(false, true);
 
   clearInterval(intervalId);
+}
+
+function toggleButtons(startDisabled, stopDisabled) {
+  startBtn.disabled = startDisabled;
+  stopBtn.disabled = stopDisabled;
 }
 
 function getRandomHexColor() {
